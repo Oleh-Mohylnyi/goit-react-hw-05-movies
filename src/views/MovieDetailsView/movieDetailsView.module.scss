@@ -1,0 +1,40 @@
+button.Button {
+    margin: 10px;
+}
+
+.Card {
+    display: flex;
+}
+
+.Image {
+    margin-left: 10px;
+}
+
+.Title {
+margin-left: 40px;
+}
+
+.SubInfoList {
+display: flex;
+}
+
+.SubNavBar {
+background-color: #60678b7c;
+}
+
+.Link {
+    padding-bottom: 16px;
+    padding-left: 25px;
+    padding-right: 25px;
+    text-decoration: none;
+    font-size: 24px;
+    color: white;
+}
+
+.ActiveLink {
+    border-radius: 5px 5px 0px 0px;
+    background-color: #fff;
+    font-weight: 700;
+    color: rgb(6, 11, 80);
+    // border: 1px solid black;
+}
