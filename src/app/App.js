@@ -19,14 +19,13 @@ function App() {
       <Suspense fallback={<Loader/>}>
         <Switch>
 
-          <Route path="/movies" exact>
-            <MoviesView />
-          </Route>
-          
-          <Route path={"/" && "" && "/goit-react-hw-05-movies"} exact>
+          <Route path={"/"} exact>
             <HomeView />
           </Route>
           
+          <Route path="/movies" exact>
+            <MoviesView />
+          </Route>
           
           <Route path="/movies/:movieId">
             <MovieDetailsView />

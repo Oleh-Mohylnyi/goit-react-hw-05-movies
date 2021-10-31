@@ -2,6 +2,7 @@ import { IoIosStarHalf } from 'react-icons/io';
 import { Link } from "react-router-dom";
 import alternativePicture from '../../images/cinema-movie.jpg';
 import s from './galleryItem.module.scss';
+import PropTypes from 'prop-types'
 
 export default function GalleryItem({ movie, location }) {
     const { id, poster_path, original_title, vote_average } = movie;
@@ -40,4 +41,9 @@ export default function GalleryItem({ movie, location }) {
             }
         </li>
     )
+}
+
+GalleryItem.propTypes = {
+    movie: PropTypes.object,
+    location: PropTypes.object,
 }

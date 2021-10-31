@@ -5,7 +5,7 @@ import * as movieApi from '../../services/moviesApi/moviesApi';
 import Spinner from "react-loader-spinner";
 import GalleryItem from "../../components/GallaryItem/GalleryItem";
 import s from './moviesView.module.scss'
-import NotFoundView from "../NotFoundView/NotFoundView";
+// import NotFoundView from "../NotFoundView/NotFoundView";
 
 export default function MoviesView() {
     const [inputSearch, setInputSearch] = useState("");
@@ -13,7 +13,7 @@ export default function MoviesView() {
     return JSON.parse(localStorage.getItem('searchQueryMovies')) ?? ""
   })
     const [foundMovies, setFoundMovies] = useState(() => {
-    return JSON.parse(localStorage.getItem('foundMovies')) ?? null
+    return JSON.parse(localStorage.getItem('foundMovies')) ?? ""
   })
     const [status, setStatus] = useState("idle");
     
@@ -21,30 +21,36 @@ export default function MoviesView() {
     const location = useLocation();
     const history = useHistory();
     const searchValueURL = new URLSearchParams(location.search).get('search') ?? ""
-        
-        useEffect(() => {
-            if (searchValueURL === searchQuery) {
-                setStatus("resolved");
-                return
-            }
-            if (searchValueURL === "" &&  inputSearch ==="") { return }
-                setInputSearch("")
-                setStatus ("pending");
-                searchQuery !== "" && history.push({ ...location, search: `search=${ searchQuery }` });
-                
-        movieApi.fetchSearch(searchQuery)
-        // .then(response => {
-        //     if (response.results.length === 0) {
-        //         return setStatus("reject")
-        //     }
-        //     return response})
-        .then(response => {
+    
+    function responseProcessing(response) {
+        if (response.results.length === 0) {
+            setStatus('reject');
+            history.push({ ...location, search: "" });
+            return
+        }
+            searchQuery !== "" && history.push({ ...location, search: `search=${ searchQuery }` });
             setStatus("resolved");
             localStorage.setItem('foundMovies', JSON.stringify(response.results));
-            localStorage.setItem('searchQueryMovies', JSON.stringify(searchQuery));
             setFoundMovies(response.results);
-        })
-            .catch(err => setStatus("reject"));
+    }
+
+    useEffect(() => {
+        if (searchValueURL === searchQuery) {
+            setStatus("resolved");
+            return
+        }
+            if (searchValueURL === "" && inputSearch === "") {
+                setInputSearch("");
+                setStatus ("idle");
+                return
+            }
+        
+        setStatus("pending");
+                
+        movieApi.fetchSearch(searchQuery)
+        .then(responseProcessing)
+        .catch(err => setStatus("reject"));
+        
             // eslint-disable-next-line
     }, [searchQuery])
 
@@ -54,16 +60,17 @@ export default function MoviesView() {
 
     const handleSubmit = (e) => {
         if (inputSearch.trim() === "") {
-            alert('please enter your request')
+            alert('please enter your request');
             return
         }
-        e.preventDefault();
         if (inputSearch.toLowerCase().trim() !== searchQuery) {
-            setSearchQuery(inputSearch.toLowerCase().trim()) 
-            } else {
+            setSearchQuery(inputSearch.toLowerCase().trim());
+            localStorage.setItem('searchQueryMovies', JSON.stringify(inputSearch.toLowerCase().trim()))
+        } else {
             setStatus("resolved");
             history.push({ ...location, search: `search=${ searchQuery }` });
-            }
+        }
+        e.preventDefault();
     }
 
     return (
@@ -82,7 +89,7 @@ export default function MoviesView() {
             <Spinner type="ThreeDots" color="black" />
         }
         <ul className={s.Gallery}>
-            {(status === 'resolved') && foundMovies.map(movie =>
+            {(status === 'resolved' && foundMovies !== "") && foundMovies.map(movie =>
                 <GalleryItem key={movie.id}
                     movie={movie}
                     location={location}
@@ -90,8 +97,8 @@ export default function MoviesView() {
                 />
             )}
         </ul>
-        {(status === 'reject') &&
-            <NotFoundView text="Nothing found!"/>
+            {(status === 'reject') && <h2>{`no results found for request: "${searchQuery}"`}</h2>
+            // <NotFoundView text="Nothing found!"/>
         }
         </>
     )

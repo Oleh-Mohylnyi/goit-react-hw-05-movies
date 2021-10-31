@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "description": "goit-react-hw-05-movies",
   "private": true,
-  "homepage": "https://Oleh-Mohylnyi.github.io/goit-react-hw-05-movies",
-  "author": "AUTHOR",
+  "author": "Oleh-Mohylnyi",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -24,7 +23,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "netlify deploy -p",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

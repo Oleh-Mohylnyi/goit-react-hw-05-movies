@@ -16,10 +16,14 @@ export default function MovieSubCast() {
 
         movieApi.fetchCast(movieId)
             .then(response => {
+            if (response.cast.length === 0) {
+                    setStatus("reject")
+                    return
+            }
             setMovieCasts(response)
             setStatus ("resolved")
-        }
-            )
+            })
+        .catch(err => setStatus("reject"));
     }, [movieId])
 
     return (
@@ -28,9 +32,8 @@ export default function MovieSubCast() {
                     <Spinner type="ThreeDots" color="black" />
                 }
             <ul> 
-                {(status === 'resolved') &&
-                    movieCasts.cast.length !== 0
-                    ? movieCasts.cast.map(cast =>
+                {status === 'resolved' &&
+                    movieCasts.cast.map(cast =>
                         <li key={cast.id}>
                             {<img alt=""
                                 width="200px"
@@ -52,9 +55,11 @@ export default function MovieSubCast() {
                                     </li>}
                             </ul>
                         </li>
-                    )
-                    : <h3>Unfortunately, there is no cast list!</h3>}
+                    )}
             </ul>
+                {(status === 'reject') &&
+                    <h2>Unfortunately, there is no cast list!</h2>
+                }
         </>        
     )
 }

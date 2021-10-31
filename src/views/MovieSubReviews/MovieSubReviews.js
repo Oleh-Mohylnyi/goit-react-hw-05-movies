@@ -15,11 +15,14 @@ export default function MovieSubReviews() {
 
         movieApi.fetchReviews(movieId)
             .then(response => {
+                if (response.results.length === 0) {
+                    setStatus("reject")
+                    return
+                }
             setMovieReviews(response)
             setStatus ("resolved")
-
-        }
-            )
+            })
+            .catch (err => setStatus("reject"));
     }, [movieId])
 
     return (
@@ -28,15 +31,17 @@ export default function MovieSubReviews() {
                 <Spinner type="ThreeDots" color="black" />
             }
             <ul> 
-            {(status === 'resolved') && movieReviews.results.length !== 0
-                ? movieReviews.results.map(review =>
-                    <li key={review.id}>
-                        <h4>{review.author} :</h4>
-                        <p>"{ review.content }"</p>
-                    </li>
-                )
-                : <h3>Unfortunately, there are no reviews at this time!</h3>}
+                {status === 'resolved' &&
+                    movieReviews.results.map(review =>
+                        <li key={review.id}>
+                            <h4>{review.author} :</h4>
+                            <p>"{review.content}"</p>
+                        </li>
+                    )}
             </ul>
+            {(status === 'reject') &&
+                <h2>Unfortunately, there are no reviews at this time!</h2>
+            }
         </>        
     )
 }
