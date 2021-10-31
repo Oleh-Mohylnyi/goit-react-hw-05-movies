@@ -35,6 +35,7 @@ export default function MoviesView() {
     }
 
     useEffect(() => {
+
         if (searchValueURL === searchQuery) {
             setStatus("resolved");
             return
