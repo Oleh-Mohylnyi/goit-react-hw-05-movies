@@ -18,7 +18,7 @@ export default function HomeView() {
     const trendingMoviesDate = JSON.parse(localStorage.getItem('trendingMoviesDate')) ?? "";
 
     useEffect(() => {
-        if (moviesTrending !== "" &&
+        if (moviesTrending !== null &&
             trendingMoviesDate === todayDate) {
             return
         }

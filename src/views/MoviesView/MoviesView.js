@@ -13,7 +13,7 @@ export default function MoviesView() {
     return JSON.parse(localStorage.getItem('searchQueryMovies')) ?? ""
   })
     const [foundMovies, setFoundMovies] = useState(() => {
-    return JSON.parse(localStorage.getItem('foundMovies')) ?? []
+    return JSON.parse(localStorage.getItem('foundMovies')) ?? null
   })
     const [status, setStatus] = useState("idle");
     
