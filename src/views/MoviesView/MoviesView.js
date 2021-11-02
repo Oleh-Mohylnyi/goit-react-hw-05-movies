@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { useRouteMatch, useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import * as movieApi from '../../services/moviesApi/moviesApi';
-// import alternativePicture from '../images/cinema-movie.jpg';
 import Spinner from "react-loader-spinner";
-import GalleryItem from "../../components/GallaryItem/GalleryItem";
 import s from './moviesView.module.scss'
 // import NotFoundView from "../NotFoundView/NotFoundView";
+import Gallery from "../../components/Gallery/Gallery";
 
 export default function MoviesView() {
     const [inputSearch, setInputSearch] = useState("");
@@ -13,11 +12,10 @@ export default function MoviesView() {
     return JSON.parse(localStorage.getItem('searchQueryMovies')) ?? ""
   })
     const [foundMovies, setFoundMovies] = useState(() => {
-    return JSON.parse(localStorage.getItem('foundMovies')) ?? ""
+    return JSON.parse(localStorage.getItem('foundMovies')) ?? null
   })
     const [status, setStatus] = useState("idle");
     
-    const { url } = useRouteMatch();
     const location = useLocation();
     const history = useHistory();
     const searchValueURL = new URLSearchParams(location.search).get('search') ?? ""
@@ -89,16 +87,13 @@ export default function MoviesView() {
         {(status === 'pending') &&
             <Spinner type="ThreeDots" color="black" />
         }
-        <ul className={s.Gallery}>
-            {(status === 'resolved' && foundMovies !== "") && foundMovies.map(movie =>
-                <GalleryItem key={movie.id}
-                    movie={movie}
+        {(status === 'resolved' && foundMovies) && 
+            <Gallery status={status}
+                    movies={foundMovies}
                     location={location}
-                    url={url}
-                />
-            )}
-        </ul>
-            {(status === 'reject') && <h2>{`no results found for request: "${searchQuery}"`}</h2>
+            />
+        }
+        {(status === 'reject') && <h2>{`no results found for request: "${searchQuery}"`}</h2>
             // <NotFoundView text="Nothing found!"/>
         }
         </>

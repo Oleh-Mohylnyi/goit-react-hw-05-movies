@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import './App.css';
 import {lazy, Suspense} from 'react'
 import {Switch, Route} from 'react-router-dom'
@@ -9,6 +8,7 @@ import Loader from '../components/loader/loader';
 const HomeView = lazy(() => import('../views/HomeView/HomeView' /* webpackChunkName: "home-view" */))
 const MoviesView = lazy(() => import('../views/MoviesView/MoviesView' /* webpackChunkName: "movies-view" */))
 const MovieDetailsView = lazy(() => import('../views/MovieDetailsView/MovieDetailsView' /* webpackChunkName: "movies-details-view" */))
+
 
 function App() {
   return (
@@ -32,7 +32,8 @@ function App() {
           </Route>
           
           <Route>
-            <NotFoundView text="page not found"/>
+            <NotFoundView text="page not found" />
+            
           </Route>
         </Switch>
       </Suspense>

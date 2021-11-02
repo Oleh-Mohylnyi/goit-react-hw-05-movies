@@ -2,20 +2,26 @@ import { useState, useEffect } from "react";
 import { useLocation} from "react-router-dom";
 import * as movieApi from '../../services/moviesApi/moviesApi'
 import Spinner from "react-loader-spinner";
-import s from './homeView.module.scss';
-import GalleryItem from "../../components/GallaryItem/GalleryItem";
+// import s from './homeView.module.scss';
+import Gallery from "../../components/Gallery/Gallery";
 
 
 export default function HomeView() {
     const [moviesTrending, setMoviesTrending] = useState(() => {
         return JSON.parse(localStorage.getItem('trendingMovies')) ?? null
     })
-    
     const [status, setStatus] = useState("idle");
     
     const location = useLocation();
     const todayDate = new Date().toLocaleDateString();
     const trendingMoviesDate = JSON.parse(localStorage.getItem('trendingMoviesDate')) ?? "";
+
+    function responseProcessing(response) {
+        setMoviesTrending(response.results)
+        setStatus ("resolved")
+        localStorage.setItem('trendingMovies', JSON.stringify(response.results))
+        localStorage.setItem('trendingMoviesDate', JSON.stringify(todayDate))
+    }
 
     useEffect(() => {
         if (moviesTrending !== null &&
@@ -24,12 +30,9 @@ export default function HomeView() {
         }
         setStatus ("pending");
         movieApi.fetchTrending()
-            .then(response => {
-            setMoviesTrending(response.results)
-            setStatus ("resolved")
-            localStorage.setItem('trendingMovies', JSON.stringify(response.results))
-            localStorage.setItem('trendingMoviesDate', JSON.stringify(todayDate))
-            })
+            .then(responseProcessing)
+            .catch(err => setStatus("reject"));
+        
             // eslint-disable-next-line
     }, [])
     
@@ -39,15 +42,14 @@ export default function HomeView() {
                 {(status === 'pending') &&
                     <Spinner type="ThreeDots" color="black" />
                 }
-            <ul className={s.Gallery}>
-                {(status === 'resolved'||moviesTrending) && moviesTrending.map(movie =>
-                    <GalleryItem key={movie.id}
-                        location={location}
-                        movie={movie} />
-                )}
-            </ul>
+                {(status === 'resolved'||moviesTrending) &&
+                <Gallery status={status}
+                    movies={moviesTrending}
+                    location={location}
+                />
+                }
+                {(status === 'reject') && <h2>{`no results found for request`}</h2>}
             </div>
-
         </>
     )
 }
