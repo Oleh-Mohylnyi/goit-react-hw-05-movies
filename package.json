@@ -4,6 +4,10 @@
   "description": "goit-react-hw-05-movies",
   "private": true,
   "author": "Oleh-Mohylnyi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oleh-Mohylnyi/goit-react-hw-05-movies.git"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import * as movieApi from '../../services/moviesApi/moviesApi';
 import Spinner from "react-loader-spinner";
-import s from './moviesView.module.scss'
+
 // import NotFoundView from "../NotFoundView/NotFoundView";
+import s from './moviesView.module.scss';
+import * as movieApi from '../../services/moviesApi/moviesApi';
 import Gallery from "../../components/Gallery/Gallery";
 
 export default function MoviesView() {
@@ -24,9 +25,10 @@ export default function MoviesView() {
         if (response.results.length === 0) {
             setStatus('reject');
             history.push({ ...location, search: "" });
-            return
+            return;
         }
-            searchQuery !== "" && history.push({ ...location, search: `search=${ searchQuery }` });
+            searchQuery !== "" && 
+                history.push({ ...location, search: `search=${ searchQuery }` });
             setStatus("resolved");
             localStorage.setItem('foundMovies', JSON.stringify(response.results));
             setFoundMovies(response.results);
@@ -64,7 +66,8 @@ export default function MoviesView() {
         }
         if (inputSearch.toLowerCase().trim() !== searchQuery) {
             setSearchQuery(inputSearch.toLowerCase().trim());
-            localStorage.setItem('searchQueryMovies', JSON.stringify(inputSearch.toLowerCase().trim()))
+            localStorage.setItem('searchQueryMovies',
+                JSON.stringify(inputSearch.toLowerCase().trim()));
         } else {
             setStatus("resolved");
             history.push({ ...location, search: `search=${ searchQuery }` });
@@ -93,7 +96,8 @@ export default function MoviesView() {
                     location={location}
             />
         }
-        {(status === 'reject') && <h2>{`no results found for request: "${searchQuery}"`}</h2>
+        {(status === 'reject') && 
+            <h2>{`no results found for request: "${searchQuery}"`}</h2>
             // <NotFoundView text="Nothing found!"/>
         }
         </>

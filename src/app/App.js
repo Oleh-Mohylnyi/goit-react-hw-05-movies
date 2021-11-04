@@ -1,8 +1,9 @@
 import './App.css';
 import {lazy, Suspense} from 'react'
-import {Switch, Route} from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
+
+// import NotFoundView from '../views/NotFoundView/NotFoundView';
 import NavBar from '../components/NavBar/NavBar';
-import NotFoundView from '../views/NotFoundView/NotFoundView';
 import Loader from '../components/loader/loader';
 
 const HomeView = lazy(() => import('../views/HomeView/HomeView' /* webpackChunkName: "home-view" */))
@@ -32,12 +33,11 @@ function App() {
           </Route>
           
           <Route>
-            <NotFoundView text="page not found" />
-            
+            {/* <NotFoundView text="page not found" /> */}
+            <Redirect to="/" />
           </Route>
         </Switch>
       </Suspense>
-
 
     </div>
   );

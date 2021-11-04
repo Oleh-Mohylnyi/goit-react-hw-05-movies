@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom"
-import * as movieApi from '../../services/moviesApi/moviesApi';
 import { useEffect, useState } from "react";
-import aneousAvatar from '../../images/aneous-avatar-user.png';
 import Spinner from "react-loader-spinner";
+
+import * as movieApi from '../../services/moviesApi/moviesApi';
+import aneousAvatar from '../../images/aneous-avatar-user.png';
 
 
 export default function MovieSubCast() {
@@ -16,14 +17,15 @@ export default function MovieSubCast() {
 
         movieApi.fetchCast(movieId)
             .then(response => {
-            if (response.cast.length === 0) {
+                if (response.cast.length === 0) {
                     setStatus("reject")
                     return
-            }
-            setMovieCasts(response)
-            setStatus ("resolved")
+                }
+                setMovieCasts(response)
+                setStatus ("resolved")
             })
-        .catch(err => setStatus("reject"));
+            .catch(err => setStatus("reject"));
+        
     }, [movieId])
 
     return (

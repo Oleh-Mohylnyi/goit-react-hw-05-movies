@@ -1,8 +1,10 @@
 import { IoIosStarHalf } from 'react-icons/io';
 import { Link } from "react-router-dom";
-import alternativePicture from '../../images/cinema-movie.jpg';
-import s from './galleryItem.module.scss';
 import PropTypes from 'prop-types'
+
+import s from './galleryItem.module.scss';
+import alternativePicture from '../../images/cinema-movie.jpg';
+
 
 export default function GalleryItem({ movie, location }) {
     const { id, poster_path, original_title, vote_average } = movie;
@@ -22,6 +24,7 @@ export default function GalleryItem({ movie, location }) {
                         from: { location, label: `back to ${backBtnText()}` }
                     },
                 }}>
+                
                 <img alt=""
                     className={s.Image}
                     width="200px" 
@@ -29,10 +32,12 @@ export default function GalleryItem({ movie, location }) {
                         ?`https://image.tmdb.org/t/p/w300${poster_path}`
                         :alternativePicture}>
                 </img>
+                
                 <p className={s.Title}>
                     {original_title}
                 </p>
             </Link>
+
             {vote_average !== 0 &&
                 <p className={s.Average}>
                 <IoIosStarHalf />

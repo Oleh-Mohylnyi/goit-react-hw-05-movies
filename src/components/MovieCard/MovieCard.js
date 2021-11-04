@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import s from './movieCard.module.scss';
 import alternativePicture from '../../images/cinema-movie.jpg';
 
@@ -13,6 +15,7 @@ export default function MovieCard({movieDetails}) {
                         ?`https://image.tmdb.org/t/p/w300${poster_path}`
                         :alternativePicture}>
                 </img>
+                
                 <div className={s.InfoList}>
                     <h1 className={s.Title} >{original_title}</h1>
                     <ul>
@@ -39,4 +42,9 @@ export default function MovieCard({movieDetails}) {
                 </div>
             </div>
     )
+}
+
+MovieCard.propTypes = {
+    movieDetails: PropTypes.object
+    
 }

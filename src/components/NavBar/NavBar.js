@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom'
+
 import s from './navBar.module.scss'
+
 
 const NavBar = () => {
     return (
